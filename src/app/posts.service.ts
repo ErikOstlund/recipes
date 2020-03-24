@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 
 import { map, catchError } from "rxjs/operators";
 import { throwError } from 'rxjs';
@@ -24,12 +24,17 @@ export class PostsService {
   }
 
   fetchPosts() {
+    let searchParams = new HttpParams();
+    searchParams = searchParams.append('print', 'pretty')
+    searchParams = searchParams.append('custom', 'key')
+
     return this.http
       .get<{ [key: string]: Post }>(
         "https://food-n-stuff-2b9e6.firebaseio.com/posts.json",
         {
-          // headers are key: value (objects)
-          headers: new HttpHeaders({ "Custom-Header": "Hello"})
+          // headers and params are key: value objects (just different syntx)
+          headers: new HttpHeaders({ "Custom-Header": "Hello"}),
+          params: searchParams
         }
       )
       .pipe(
