@@ -1,7 +1,8 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 
-import { map } from "rxjs/operators";
+import { map, catchError } from "rxjs/operators";
+import { throwError } from 'rxjs';
 
 import { Post } from "./models/post.interface";
 
@@ -40,6 +41,11 @@ export class PostsService {
             }
           }
           return postsArray;
+        }),
+        catchError(errorResponse => {
+          // do something with errorResponse; send to analtics server
+          // throwError is an Observable - currently doing nothing cuz none is subscribed to it
+          return throwError(errorResponse);
         })
       );
   }

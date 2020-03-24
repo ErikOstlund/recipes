@@ -1,5 +1,4 @@
 import { Component, OnInit } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
 
 // services
 import { PostsService } from "./posts.service";
@@ -17,7 +16,7 @@ export class AppComponent implements OnInit {
   isFetching: boolean = false;
   error = null;
 
-  constructor(private http: HttpClient, private postsService: PostsService) {}
+  constructor(private postsService: PostsService) {}
 
   ngOnInit() {
     this.onFetchPosts();
@@ -37,6 +36,7 @@ export class AppComponent implements OnInit {
         this.loadedPosts = posts;
       },
       error => {
+        this.isFetching = false;
         this.error = error;
       }
     );
@@ -46,5 +46,9 @@ export class AppComponent implements OnInit {
     this.postsService.deletePosts().subscribe(() => {
       this.loadedPosts = [];
     });
+  }
+
+  onHandleError() {
+    this.error = null;
   }
 }

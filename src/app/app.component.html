@@ -66,9 +66,8 @@
       <!-- Error -->
       <div *ngIf="error" class="alert alert-danger">
         <h1>Error</h1>
-        <p>Status Code: {{ error.status }}</p>
-        <p>Status Text: {{ error.statusText }}</p>
-        <p>Error Name: {{ error.name }}</p>
+        <p>Error Message: {{ error.message }}</p>
+        <button class="btn btn-danger" (click)="onHandleError()">Dismiss</button>
       </div>
     </div>
   </div>
