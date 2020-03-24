@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 
 import { map, catchError } from "rxjs/operators";
 import { throwError } from 'rxjs';
@@ -26,7 +26,11 @@ export class PostsService {
   fetchPosts() {
     return this.http
       .get<{ [key: string]: Post }>(
-        "https://food-n-stuff-2b9e6.firebaseio.com/posts.json"
+        "https://food-n-stuff-2b9e6.firebaseio.com/posts.json",
+        {
+          // headers are key: value (objects)
+          headers: new HttpHeaders({ "Custom-Header": "Hello"})
+        }
       )
       .pipe(
         // we are converting the Firebase JS object into an array
