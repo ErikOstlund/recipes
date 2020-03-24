@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams, HttpEventType } from "@angular/common/http";
 
-import { map, catchError } from "rxjs/operators";
+import { map, catchError, tap } from "rxjs/operators";
 import { throwError } from 'rxjs';
 
 import { Post } from "./models/post.interface";
@@ -14,10 +14,14 @@ export class PostsService {
     return this.http
       .post<{ name: string }>(
         "https://food-n-stuff-2b9e6.firebaseio.com/posts.json",
-        postData
+        postData,
+        {
+          observe: 'response'
+        }
       )
       .pipe(
         map(responseData => {
+          console.log(responseData);
           return responseData;
         })
       );
@@ -61,7 +65,23 @@ export class PostsService {
 
   deletePosts() {
     return this.http.delete(
-      "https://food-n-stuff-2b9e6.firebaseio.com/posts.json"
+      "https://food-n-stuff-2b9e6.firebaseio.com/posts.json",
+      {
+        observe: 'events'
+      }
+    )
+    .pipe(
+      tap(event => {
+        console.log(event)
+        // checking for very specific responses then perform an action if needed
+        if (event.type === HttpEventType.Sent) {
+          console.log(event.type);
+        }
+        
+        if (event.type === HttpEventType.Response) {
+          console.log(event.body)
+        }
+      })
     );
   }
 }
