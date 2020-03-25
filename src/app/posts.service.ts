@@ -38,7 +38,9 @@ export class PostsService {
         {
           // headers and params are key: value objects (just different syntx)
           headers: new HttpHeaders({ "Custom-Header": "Hello"}),
-          params: searchParams
+          params: searchParams,
+          // Default is 'json' and almost never need to change this, but you can specify 'string', ect.
+          responseType: "json"
         }
       )
       .pipe(
@@ -77,7 +79,7 @@ export class PostsService {
         if (event.type === HttpEventType.Sent) {
           console.log(event.type);
         }
-        
+
         if (event.type === HttpEventType.Response) {
           console.log(event.body)
         }
